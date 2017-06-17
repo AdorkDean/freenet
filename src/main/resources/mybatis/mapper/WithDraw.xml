@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.WithDrawDao">
+
+	<sql id="tabName">f_withdraw</sql>
+
+	<resultMap id="WithDraw" type="com.freenet.domain.WithDraw"></resultMap>
+
+	<insert id="insertWithDraw" useGeneratedKeys="true"
+		parameterType="com.freenet.domain.WithDraw">
+		INSERT INTO
+		<include refid="tabName" />
+		(userId,userName,drawMoney,zfbNumber,mobile,status,cdt)
+		VALUES(#{userId},#{userName},#{drawMoney},#{zfbNumber},#{mobile},#{status},#{cdt})
+	</insert>
+
+	<select id="selectWithDrawByUserId" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId}
+	</select>
+
+	<select id="selectWithDrawByUserIdPage" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId}
+		order by cdt DESC limit #{startPos},#{pageSize}
+	</select>
+
+	<select id="selectAllCountByDate" resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId} and cdt between #{startDate} and #{endDate}
+	</select>
+
+	<select id="selectWithDrawByUserIdPageDate" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId}
+		and cdt between #{startDate} and #{endDate}
+		order by cdt DESC limit #{startPos},#{pageSize}
+	</select>
+
+
+
+	<!-- 分页查询 -->
+	<select id="selectWithDrawByPage" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		ORDER BY cdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectWithDrawByPageCount" resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="tabName" />
+	</select>
+
+	<update id="updateWithDrawStatus">
+		UPDATE
+		<include refid="tabName" />
+		SET
+		status=#{status}
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectWithDrawById" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE id=#{id}
+	</select>
+
+	<select id="selectByKeyword" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		<where>
+			mobile=#{keyword} OR zfbNumber=#{keyword} OR userName LIKE
+			"%"#{keyword}"%"
+		</where>
+	</select>
+
+	<!-- 分页查询不同状态的提现记录 -->
+	<select id="selectWithDrawStatusByPage" resultMap="WithDraw">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE status=#{status}
+		ORDER BY cdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectWithDrawStatusByPageCount" resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="tabName" />
+		WHERE status=#{status}
+	</select>
+
+	<!-- <delete id="deleteWithDrawById"> DELETE FROM <include refid="tabName" 
+		/> WHERE id=#{id} </delete> -->
+
+
+	<!-- 个人消息表格操作 -->
+	<insert id="insertContent" useGeneratedKeys="true"
+		parameterType="com.freenet.domain.Content">
+		INSERT INTO
+		f_content
+		(userId,message,type,cdt)
+		VALUES(#{userId},#{message},#{type},#{cdt})
+	</insert>
+
+	<!-- 分页查询我的消息 -->
+	<select id="selectContentByPage" resultType="com.freenet.domain.Content">
+		SELECT * FROM
+		f_content
+		WHERE userId=#{userId}
+		ORDER BY cdt DESC LIMIT
+		#{startPos},#{pageSize}
+	</select>
+	<select id="seletContentByPageCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		f_content
+		WHERE userId=#{userId}
+	</select>
+
+	<select id="selectContentByUserId" resultType="com.freenet.domain.Content">
+		SELECT * FROM
+		f_content
+		WHERE userId=#{userId} ORDER BY cdt DESC
+	</select>
+
+	<delete id="deleteMore" parameterType="list">
+		DELETE FROM f_content WHERE id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+	<!-- 根据类型分页查询我的消息 -->
+	<select id="selectContentTypeByPage" resultType="com.freenet.domain.Content">
+		SELECT * FROM
+		f_content
+		WHERE userId=#{userId} AND type=#{type}
+		ORDER BY cdt DESC
+		LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="seletContentTypeByPageCount" resultType="int">
+		SELECT
+		COUNT(*) FROM
+		f_content
+		WHERE userId=#{userId} AND type=#{type}
+	</select>
+
+</mapper>

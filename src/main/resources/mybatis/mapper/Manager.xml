@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.ManagerDao">
+
+	<sql id="tabName">f_manager</sql>
+	
+	<resultMap id="Manager" type="com.freenet.domain.Manager"></resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" parameterType="com.freenet.domain.Manager">
+		INSERT INTO 
+		<include refid="tabName" /> 
+		(username,password,name,level,cdt)
+		VALUES(#{username},#{password},#{name},#{level},#{cdt})
+	</insert>
+	
+	<update id="updatePwd">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		password=#{password}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="login" resultMap="Manager">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE username=#{username} AND password=#{password}
+	</select>
+	
+	<select id="selectWork" resultMap="Manager">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE level !=0;
+	</select>
+	
+	<select id="selectByUserName" resultMap="Manager">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE username=#{username}
+	</select>
+	
+	<select id="selectById" resultMap="Manager">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE id=#{id}
+	</select>
+	
+	<delete id="deleteById">
+		DELETE FROM 
+		<include refid="tabName" /> 
+		WHERE id=#{id}
+	</delete>
+	
+	<!-- 收款配置表格操作 -->
+	<insert id="insertAllocation" useGeneratedKeys="true" parameterType="com.freenet.domain.Allocation">
+		INSERT INTO 
+		f_allocation
+		(payZfb,cdt)
+		VALUES(#{payZfb},#{cdt})
+	</insert>
+	
+	<update id="updateAllocation">
+		UPDATE 
+		f_allocation
+		SET 
+		payZfb=#{payZfb}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="selectAllocationAll" resultType="com.freenet.domain.Allocation">
+		SELECT * FROM 
+		f_allocation
+	</select>
+
+
+</mapper>

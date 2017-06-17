@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.MediaArticleDao">
+
+	<sql id="tabName">f_mediaarticle</sql>
+
+	<!-- <resultMap id="Manager" type="com.freenet.domain.Manager"></resultMap> -->
+
+	<!-- 文章添加操作 -->
+	<insert id="insertArticle" parameterType="com.freenet.domain.MediaArticle"
+		useGeneratedKeys="true" keyProperty="id">
+		insert
+		<include refid="tabName" /> 
+		(title,author,releaseDate)
+		values(#{title},#{author},#{releaseDate})
+	</insert>
+
+	<!-- 文章删除操作 -->
+	<delete id="deleteArticle" parameterType="int">
+		delete from
+		<include refid="tabName" />  where id = #{id}
+	</delete>
+
+	<!-- 文章修改操作 -->
+	<update id="updateArticle" parameterType="com.freenet.domain.MediaArticle">
+		update <include refid="tabName" />   set  title = #{title},author=#{author},releaseDate=#{releaseDate} where  id = #{id}
+	</update>
+	
+	<!-- 文章查询操作 -->
+	<select id="getArticle" parameterType="int" resultType="com.freenet.domain.MediaArticle">
+		select * from <include refid="tabName" />   where id = #{id}
+	</select>
+	
+	<!-- 获取文章列表 -->
+	<select id="getArticleList" resultType="com.freenet.domain.MediaArticle">
+		select * from <include refid="tabName" />  order by releaseDate DESC
+	</select>
+	
+	<!-- 根据分页获取文章列表 -->
+	<select id="getArticleListByPage" parameterType="int"  resultType="com.freenet.domain.MediaArticle">
+		select * from <include refid="tabName" /> order by releaseDate DESC  LIMIT #{0},#{1} 
+	</select> 
+	
+	<!-- 获得文章的总数 -->
+	<select id="getTotalCount" resultType="int" >
+		select count(*) from <include refid="tabName" /> 
+	</select>
+	
+	<!-- 获得上一条记录 -->
+	<select id="getLastArticle" parameterType="int"  resultType="com.freenet.domain.NoticeArticle"> 
+		select  * from <include refid="tabName" />  where id &lt;  #{id} order by id DESC limit 0,1
+	</select>
+	
+	<!-- 获得下一条记录 -->
+	<select id="getNextArticle" parameterType="int"  resultType="com.freenet.domain.NoticeArticle"> 
+		select  * from <include refid="tabName" />  where id  &gt; #{id} order by id ASC limit 0,1
+	</select>
+	
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.CoinDao">
+
+	<sql id="tabName">f_coin</sql>
+	
+	<resultMap id="Coin" type="com.freenet.domain.Coin"></resultMap>
+	
+	<insert id="insertCoin" useGeneratedKeys="true" parameterType="com.freenet.domain.Coin">
+		INSERT INTO 
+		<include refid="tabName" /> 
+		(coinName,coinRate,coinCount,cdt)
+		VALUES(#{coinName},#{coinRate},#{coinCount},#{cdt})
+	</insert>
+	
+	<update id="updateByCoinId">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		coinRate=#{coinRate},
+		coinCount=#{coinCount}
+		WHERE coinId=#{coinId}
+	</update>
+	
+	<select id="selectAll" resultMap="Coin">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+	</select>
+	
+	<select id="selectByCoinId" resultMap="Coin">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE coinId=#{coinId}
+	</select>
+	
+	
+
+</mapper>

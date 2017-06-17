@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.RecentPriceDataDao">
+
+	<sql id="tabName">f_recentpricedata</sql>
+
+	<insert id="insertPriceData" parameterType="com.freenet.domain.RecentPriceData">
+		insert
+		<include refid="tabName" />
+		(minVal,maxVal,startDate) values (#{minVal},#{maxVal},#{startDate})
+	</insert>
+
+	<update id="updatePriceData">
+		update
+		<include refid="tabName" />
+		set
+		minVal=#{data.minVal},maxVal=#{data.maxVal},startDate=#{data.startDate} 
+		where id=#{id}
+	</update>
+	
+	<select id="getAllPriceData" resultType="com.freenet.domain.RecentPriceData">
+		select * from
+		<include refid="tabName" />
+		order by startDate 
+	</select>
+	
+	<select id="getPriceData" resultType="com.freenet.domain.RecentPriceData">
+		select * from
+		<include refid="tabName" />
+		order by startDate DESC limit 0 ,1 
+	</select>
+
+	<delete id="deletePriceData">
+		delete * from
+		<include refid="tabName" />
+		where id = #{id};
+	</delete>
+
+</mapper>

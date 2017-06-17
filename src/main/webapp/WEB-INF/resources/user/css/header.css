@@ -1,0 +1,100 @@
+body{
+	font-family: "Î¢ÈíÑÅºÚ" !important;
+	font-size: 14px;
+}
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+ul li {
+	list-style: none;
+}
+
+img {
+	border: 0;
+}
+
+.Acc_top {
+	width: 100%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #0f091c;
+}
+
+.Acc_top_tit {
+	width: 58%;
+	overflow: hidden;
+	margin: 5px auto;
+}
+
+.Acc_top_langu {
+	overflow: hidden;
+	float: right;
+}
+
+.Acc_top_langu a {
+	color: white;
+	font-size: 14px;
+}
+
+.Acc_login,
+.Acc_register {
+	color: #1ad0db !important;
+	margin: 0 7px;
+}
+
+.Acc_navlist {
+	width: 70%;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
+.Acc_logo {
+	overflow: hidden;
+	margin-bottom: 20px;
+	float: left;
+}
+
+.Acc_logo img {
+	max-width: 175px;
+}
+
+.Acc_nav {
+	overflow: hidden;
+	float: right;
+}
+
+.Acc_menu {
+	overflow: hidden;
+}
+
+.Acc_menu li {
+	float: left;
+	width: 66px;
+	margin: 29px;
+	color: white;
+}
+
+.Acc_menu a {
+	color: white;
+}
+
+.Acc_bot {
+	width: 100%;
+	height: 100px;
+	background: #0f091c;
+}
+
+.Acc_bot p {
+	text-align: center;
+	color: white;
+	padding-top: 17px;
+	font-size: 14px;
+}

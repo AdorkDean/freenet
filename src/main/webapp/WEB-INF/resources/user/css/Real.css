@@ -1,0 +1,142 @@
+.Rel_form_group {
+				width: 60%;
+				overflow: hidden;
+				margin: 0 auto;
+				margin-top: 3rem;
+			}
+			
+			.Se_form_submit {
+				margin-bottom: 40px;
+			}
+			
+			.Rel_radio {
+				width: 12px !important;
+				height: 12px !important;
+			}
+			
+			.Rel_pwd_inp {
+				width: 30%;
+				margin-top: 3px;
+				float: right;
+			}
+			
+			.Rel_pwd_group {
+				width: 42%;
+				overflow: hidden;
+				margin-bottom: 1.5rem;
+			}
+			
+			.Rel_sex {
+				font-size: 14px;
+				width: 28px !important;
+			}
+			
+			.Rel_pwd_group label {
+				font-size: 14px;
+				color: #fff;
+				font-weight: inherit;
+				text-align: right;
+				line-height: 30px;
+				width: 100px;
+				display: inline-block
+			}
+			
+			.Se_pwd_inp {
+				position: relative;
+			}
+			
+			.Se_pwd_inp select {
+				width: 60%;
+				height: 33px;
+				border-radius: 4px;
+				border: none;
+				float: left;
+				outline: none;
+			}
+			
+			.Real_Upload {
+				width: 23% !important;
+				height: 35px !important;
+				border-radius: 4px;
+				border: none;
+				float: left;
+				outline: none;
+				position: absolute;
+				top: 0px;
+				left: 0;
+				opacity: 0;
+			}
+			
+			.Real_Click {
+				width: 23% !important;
+				height: 33px !important;
+				background: white;
+				color: #70a6e1;
+				display: block;
+				font-size: 15px;
+				line-height: 33px;
+				text-align: center;
+				font-family: "微软雅黑";
+				float: left;
+			}
+			
+			.Real_Prompt {
+				font-size: 14px;
+				color: white;
+				margin-left: 10px;
+				line-height: 30px;
+			}
+			
+			.Real_img {
+				margin-top: 15px;
+				display: block;
+				border: none;
+			}
+			
+			.Real_Process {
+				width: 72%;
+				overflow: hidden;
+				margin: 0 auto;
+				margin-top: 35px;
+				margin-bottom: 35px;
+				border-top: 1px solid #1e72a3;
+			}
+			
+			.Real_Process p {
+				font-size: 12px;
+				font-family: "微软雅黑";
+				color: white;
+			}
+			.Real_mid_white {
+				    border-top: 15px solid transparent;
+					border-bottom: 15px solid transparent;
+					border-right: 15px solid white;
+					position: absolute;
+					left: 91.94%;
+					top: 13.5%;
+			}
+			.Rel_mid_triangle {
+				    border-top: 15px solid transparent;
+					border-bottom: 15px solid transparent;
+					border-right: 15px solid #0c6399;
+					position: absolute;
+					left: 93%;
+					top: 13.5%;
+			}
+
+
+			.Real_mid_left {
+				width: 12%;
+				height: 84rem;
+				float: left;
+				position: relative;
+				border-right: 2px solid white;
+				background: url(../img/beijinglong.png) no-repeat center;
+				background-size:100% 100%;
+			}
+			.Out_form_group{
+				width: 90%;
+				overflow: hidden;
+				margin: 0 auto;
+				border-bottom: 1px solid white;
+			}

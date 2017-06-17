@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.UserDao">
+
+	<sql id="tabName">f_user</sql>
+	
+	<resultMap id="User" type="com.freenet.domain.User"></resultMap>
+	
+	<insert id="insertUser" useGeneratedKeys="true" parameterType="com.freenet.domain.User">
+		INSERT INTO 
+		<include refid="tabName" />
+		(username,password,status,authStatus,cdt) 
+		VALUES(#{username},#{password},#{status},#{authStatus},#{cdt})
+	</insert>
+	
+	<select id="selectByUsername" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE username=#{username}
+	</select>
+	
+	<select id="login" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE username=#{username} AND password=#{password}
+	</select>
+	
+	<update id="updatePwd">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		password=#{password} 
+		WHERE username=#{username}
+	</update>
+	
+	<select id="selectByUserId" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE userId=#{userId}
+	</select>
+	
+	<!-- 分页SQL语句 -->  
+	<select id="selectUserByPage" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		ORDER BY userId DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+	</select>
+	
+	<!-- 分页查询不同实名状态的用户 -->
+	<select id="selectUserAuthByPage" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE authStatus = #{authStatus} 
+		ORDER BY userId DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="seletUserAuthByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE authStatus=#{authStatus}
+	</select>
+	
+	<!-- 分页查询账号状态的用户 -->
+	<select id="selectUserStatusByPage" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE status = #{status} 
+		ORDER BY userId DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="seletUserStatusByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE status=#{status}
+	</select>
+	
+	<select id="selectByKeyWord" resultMap="User">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE username = #{username}
+	</select>
+	
+	<update id="updateStatus">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		status=2
+		WHERE userId=#{userId}
+	</update>
+	
+	<update id="updateStatusNormal">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		status=1
+		WHERE userId=#{userId}
+	</update>
+	
+	<update id="updateAuthStatus">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		authStatus=#{authStatus}
+		WHERE userId = #{userId}
+	</update>
+	
+	<update id="updateLoginPwd">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		password=#{password}
+		WHERE userId=#{userId}
+	</update>
+	
+	<update id="updateDealPwd">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		dealPwd=#{dealPwd}
+		WHERE userId=#{userId}
+	</update>
+	
+	<update id="updateEmail">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		email=#{email}
+		WHERE userId=#{userId}
+	</update>
+	
+	
+	<!-- 实名认证表格操作 -->
+	<select id="selectAuthByUserId" resultType="com.freenet.domain.Auth">
+		SELECT * FROM 
+		f_auth 
+		WHERE userId=#{userId}
+	</select>
+	
+	<insert id="insertUserAuth" useGeneratedKeys="true" parameterType="com.freenet.domain.Auth">
+		INSERT INTO 
+		f_auth 
+		(userId,name,sex,cardType,card,photoFront,photoBack,photoAll,cdt) 
+		VALUES(#{userId},#{name},#{sex},#{cardType},#{card},#{photoFront},#{photoBack},#{photoAll},#{cdt})
+	</insert>
+	
+	<update id="updateAuth">
+		UPDATE 
+		f_auth 
+		SET 
+		name=#{auth.name},
+		sex=#{auth.sex},
+		cardType=#{auth.cardType},
+		card=#{auth.card},
+		photoFront=#{auth.photoFront},
+		photoBack=#{auth.photoBack},
+		photoAll=#{auth.photoAll},
+		cdt=#{auth.cdt}
+		WHERE userId=#{auth.userId}
+	</update>
+	<!-- 结束 -->
+	
+	<!-- 安全记录表格操作 -->
+	<insert id="insertloginHistroy" useGeneratedKeys="true" parameterType="com.freenet.domain.LoginHistroy">
+		INSERT INTO 
+		f_loginHistroy 
+		(userId,loginTime,loginIp) 
+		VALUES(#{userId},#{loginTime},#{loginIp});
+	</insert>
+	
+	<select id="selectHistroyByUserId" resultType="com.freenet.domain.LoginHistroy">
+		SELECT * FROM 
+		f_loginHistroy 
+		WHERE userId=#{userId} 
+		ORDER BY loginTime DESC
+	</select>
+	<!-- 结束 -->
+	
+	
+	<!-- 银行表格操作 -->
+	<insert id="insertBank" useGeneratedKeys="true" parameterType="com.freenet.domain.Bank">
+		INSERT INTO 
+		f_bank
+		(userId,name,zfbNumber,phone,province,area,cdt)
+		VALUES(#{userId},#{name},#{zfbNumber},#{phone},#{province},#{area},#{cdt})
+	</insert>
+	
+	<select id="selectBankByUserId" resultType="com.freenet.domain.Bank">
+		SELECT * FROM 
+		f_bank 
+		WHERE userId=#{userId}
+	</select>
+	
+	<delete id="deleteBank">
+		DELETE FROM 
+		f_bank
+		WHERE bankId=#{bankId}
+	</delete>
+	<!-- 结束 -->
+	
+	
+	<!-- 用户资金账户表格 -->
+	<insert id="insertMoney" useGeneratedKeys="true" parameterType="com.freenet.domain.Money">
+		INSERT INTO 
+		f_money 
+		(userId,money)
+		VALUES(#{userId},#{money})
+	</insert>
+	
+	<select id="selectMoneyByUserId" resultType="com.freenet.domain.Money">
+		SELECT * FROM 
+		f_money 
+		WHERE userId=#{userId}
+	</select>
+	
+	<update id="updateMoneyByUserId">
+		UPDATE 
+		f_money 
+		SET 
+		money=#{money} 
+		WHERE userId=#{userId}
+	</update>
+	
+	
+	<!-- 结束 -->
+	
+
+</mapper>

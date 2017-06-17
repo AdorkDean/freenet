@@ -1,0 +1,223 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	display: block;
+}
+
+a {
+	text-decoration: none;
+}
+
+ul li {
+	list-style: none;
+}
+
+@font-face {
+  font-family: 'iconfont';  /* project id 284532 */
+  src: url('//at.alicdn.com/t/font_plcvs7ywyzr27qfr.eot');
+  src: url('//at.alicdn.com/t/font_plcvs7ywyzr27qfr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_plcvs7ywyzr27qfr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_plcvs7ywyzr27qfr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_plcvs7ywyzr27qfr.svg#iconfont') format('svg');
+}
+
+.iconfont {
+	font-size: 20px;
+	font-family: 'iconfont';
+	font-style: normal;
+	position: absolute;
+	left: 3%;
+	top: 25%;
+	color: #878787;
+}
+.icon_font{
+	font-size: 12px;
+	font-family: 'iconfont';
+	font-style: normal;
+}
+
+.ico {
+	top: 20% !important;
+}
+
+.nav_outer {
+	width: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+	background: url(../img/denglu.png) no-repeat center;
+	height:843px;
+    min-height: 660px;
+	background-size: 100% 100%;
+}
+
+.nav_service {
+	font-style: normal !important;
+	font-size: 12px !important;
+	width: 68%;
+	text-align: left !important;
+	margin: 0 auto !important;
+	line-height: 20px !important;
+}
+
+.nav_top {
+	width: 200px;
+	margin: 0 auto;
+	margin-top: 50px;
+	overflow: hidden;
+}
+
+.nav_safe {
+	width: 300px;
+	margin: 0 auto;
+	margin-top: 10px;
+	overflow: hidden;
+}
+
+.nav_safe p {
+	color: white;
+	text-align: center;
+}
+
+.nav_mid {
+	width: 27%;
+	margin: 0 auto;
+	border: 1px solid #17bbc5;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.30);
+	margin-top: 10px;
+	margin-bottom: 71px;
+	border-radius: 4px;
+}
+
+.nav_mid p {
+	text-align: center;
+	color: white;
+	font-weight: 300;
+	font-size: 24px;
+	font-family: "微软雅黑";
+	font-style: oblique;
+	line-height: 60px;
+}
+
+.text_in {
+	background: rgba(0, 0, 0, 0.50);
+	border: 1px solid #1ce4ef;
+	height: 36px;
+	border-radius: 4px;
+	color: white;
+	padding-left: 36px;
+	border: 1px solid #1ce4ef;
+	width: 85%;
+	outline: none;
+}
+
+.nav_mid ul {
+	margin-top: 32px;
+}
+
+.nav_mid ul li {
+	overflow: hidden;
+	font-size: 16px;
+	color: white;
+	margin: 24px auto;
+	width: 69%;
+	position: relative;
+}
+
+.nav_mid select {
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	top: 1px;
+	width: 85px;
+	height: 35px;
+	border-radius: 3px;
+	background: transparent;
+	font-size: 14px;
+	text-align: center;
+	line-height: 36px;
+	color: #69b3e6;
+	border: 1px solid transparent;
+	outline: none;
+}
+
+.nav_Verify {
+	background: rgba(0, 0, 0, 0.50);
+	border: 1px solid #1ce4ef;
+	height: 36px;
+	border-radius: 4px;
+	color: white;
+	padding-left: 36px;
+	border: 1px solid #1ce4ef;
+	width: 49%;
+	outline: none;
+	float: left;
+}
+
+.nav_Verify_img {
+	width: 28%;
+	height: 36px;
+	border-radius: 4px;
+	margin-left: 6.2%;
+	float: left;
+}
+
+.nav_Verify_btn {
+	background: #787878;
+	border: none;
+	color: white;
+	width: 28%;
+	height: 36px;
+	border-radius: 4px;
+	margin-left: 7%;
+	float: left;
+}
+
+.nav_Sub {
+	width: 69%;
+	background: #1bdde8;
+	height: 36px;
+	border: none;
+	border-radius: 4px;
+	margin: 10px auto;
+	display: block;
+	color: white;
+	font-size: 18px;
+	outline: none;
+}
+.nav_test{
+	font-size: 12px !important;
+    font-style: normal !important;
+    line-height: 15px !important;
+    text-align: left !important;
+    width: 67% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    color: red !important;
+}
+
+.nav_Login {
+	color: #1ddfea;
+	text-decoration: underline;
+	float: right;
+}
+
+.nav_pwd {
+	width: 69%;
+	margin: 20px auto;
+	overflow: hidden;
+}
+
+.nav_reg {
+	color: #1ddfea;
+	text-decoration: underline;
+	float: left;
+}
+
+.nav_find_pwd {
+	float: right;
+	color: #cccccc;
+}

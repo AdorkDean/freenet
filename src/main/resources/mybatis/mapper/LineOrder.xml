@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.LineOrderDao">
+
+	<sql id="tabName">f_lineOrder</sql>
+
+	<resultMap id="LineOrder" type="com.freenet.domain.LineOrder"></resultMap>
+
+	<insert id="insertLineOrder" useGeneratedKeys="true"
+		parameterType="com.freenet.domain.LineOrder">
+		INSERT INTO
+		<include refid="tabName" />
+		(type,sellUserId,sellUsername,sellName,sellCoin,price,status,sellCdt)
+		VALUES(#{type},#{sellUserId},#{sellUsername},#{sellName},#{sellCoin},#{price},#{status},#{sellCdt})
+	</insert>
+
+	<!-- 分页查询所有线上订单 -->
+	<select id="selectLineOrderByPage" resultMap="LineOrder">
+		SELECT * FROM
+		<include refid="tabName" />
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectLineOrderByPageCount" resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="tabName" />
+	</select>
+	<!-- 结束 -->
+
+	<!-- 分页查询不同状态的订单 -->
+	<select id="selectLineOrderStatusByPage" resultMap="LineOrder">
+		SELECT * FROM 
+		<include refid="tabName"/>
+		WHERE status=#{status} ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectLineOrderStatusByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE status=#{status}
+	</select>
+	<!-- 结束 -->
+	
+	<!-- 模糊查询 -->
+	<select id="selectByKeyword" resultMap="LineOrder">
+		SELECT * FROM 
+		<include refid="tabName"/>
+		WHERE sellUsername=#{keyword} OR sellName LIKE "%"#{keyword}"%"
+	</select>
+	
+	<select id="selectById" resultMap="LineOrder">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE id=#{id}
+	</select>
+
+	<select id="selectBySellUserId" resultMap="LineOrder">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE sellUserId=#{sellUserId}
+	</select>
+
+	<select id="getCountByStatusAndUser" resultType="int">
+		select count(*) from
+		<include refid="tabName" />
+		<where>
+			<if test="sellUserId!=null">sellUserId = #{sellUserId}</if>
+			<if test="buyUserId!=null">and buyUserId = #{buyUserId}</if>
+			<if test="status!=null">and status = #{status}</if>
+			<if test="startDate!=null">and ${dateType} between #{startDate}and #{endDate}</if>
+		</where>
+	</select>
+	<select id="getAllByStatusAndUser" resultType="com.freenet.domain.LineOrder">
+		select * from
+		<include refid="tabName" />
+		<where>
+			<if test="sellUserId!=null"> sellUserId = #{sellUserId}</if>
+			<if test="buyUserId!=null"> and buyUserId = #{buyUserId} </if>
+			<if test="status!=null">and status = #{status}</if>
+			<if test="startDate!=null">and ${dateType} between #{startDate}and #{endDate}</if>
+		</where>
+		order by ${dateType} DESC
+		<if test="startPage!=null">limit #{startPage}, #{pageSize}</if>
+	</select>
+	
+
+	<update id="updateSatusById">
+		update <include refid="tabName" /> set status = #{status} where id = #{id}
+	</update>
+	<update id="updateBuyDateById">
+		update <include refid="tabName" /> set buyCdt = #{buyCdt} where id = #{id}
+	</update>
+	<update id="updateBuyUseridById">
+		update <include refid="tabName" /> set buyUserId = #{buyUserId} where id = #{id}
+	</update>
+	<update id="updateBuyUsernameById">
+		update <include refid="tabName" /> set buyUsername = #{buyUsername} where id = #{id}
+	</update>
+	<update id="updateBuynameById">
+		update <include refid="tabName" /> set buyName = #{buyName} where id = #{id}
+	</update>
+	
+
+
+
+</mapper>

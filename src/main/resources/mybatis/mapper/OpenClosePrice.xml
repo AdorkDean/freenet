@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.OpenClosePriceDao">
+
+	<sql id="tabName">f_opencloseprice</sql>
+
+	<!-- 增减新的价格数据 -->
+	<insert id="insertNewPrice" parameterType="com.freenet.domain.OpenClosePrice"
+		useGeneratedKeys="true" keyProperty="id">
+		insert
+		<include refid="tabName" />
+		(openPrice,inDay)
+		values(#{openPrice},#{inDay})
+	</insert>
+
+	<!-- 增加收盘价 -->
+	<update id="updateClosePrice">
+		update
+		<include refid="tabName" />
+		set closePrice = #{1} where inDay = #{0}
+	</update>
+
+	<!-- 获取某日的记录 -->
+	<select id="selectPriceByDate" parameterType="Date"
+		resultType="com.freenet.domain.OpenClosePrice">
+		select * from
+		<include refid="tabName" />
+		where inDay = #{inDay}
+	</select>
+
+	<!-- 获取最后一条记录 -->
+	<select id="selectLastPrice" resultType="com.freenet.domain.OpenClosePrice">
+		select * from
+		<include refid="tabName" />
+		order by desc limit 0,1
+	</select>
+
+	<!-- 删除某记录 -->
+	<delete id="deletePriceByDate" parameterType="Date">
+		delete from
+		<include refid="tabName" />
+		where inDay = #{inDay}
+	</delete>
+
+	<!-- 获取所有记录 -->
+	<select id="selectAllPrice" resultType="com.freenet.domain.OpenClosePrice">
+		select * from
+		<include refid="tabName" />
+	</select>
+
+</mapper>

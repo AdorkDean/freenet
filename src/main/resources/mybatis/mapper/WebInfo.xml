@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.WebInfoDao">
+
+	<sql id="tabName">f_webinfo</sql>
+
+	<select id="getAll" resultType="com.freenet.domain.WebInfo">
+		SELECT * FROM
+		<include refid="tabName" />
+	</select>
+
+	<select id="getEmail" resultType="hashmap">
+		select email from
+		<include refid="tabName" />
+	</select>
+
+	<select id="getname" resultType="hashmap">
+		select name from
+		<include refid="tabName" />
+	</select>
+	<select id="getemail" resultType="hashmap">
+		select email from
+		<include refid="tabName" />
+	</select>
+	<select id="getdescrip" resultType="hashmap">
+		select descrip from
+		<include refid="tabName" />
+	</select>
+	<select id="getwebsite" resultType="hashmap">
+		select website from
+		<include refid="tabName" />
+	</select>
+	<select id="getcopyright" resultType="hashmap">
+		select copyright from
+		<include refid="tabName" />
+	</select>
+
+	<update id="insertInfo" parameterType="com.freenet.domain.WebInfo">
+		insert
+		<include refid="tabName" />
+		(name,email,descrip,website,copyright)
+		 values (#{name}, #{email} ,#{descrip} ,#{website},#{copyright})
+	</update>
+
+	<update id="updateInfo" parameterType="com.freenet.domain.WebInfo">
+		update
+		<include refid="tabName" />
+		set
+		name =
+		#{name}, email = #{email} ,descrip = #{descrip} , website =
+		#{website}
+		,copyright = #{copyright}
+	</update>
+
+
+</mapper>

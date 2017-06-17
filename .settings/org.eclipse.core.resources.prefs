@@ -1,0 +1,17 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/resources/manager/Editor/jsp/config.json=UTF-8
+encoding//src/main/webapp/WEB-INF/views/manager/Editor/jsp/config.json=UTF-8
+encoding//src/main/webapp/WEB-INF/views/manager/mediacover.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/manager/recharge.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/IntoGold.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/authStatus.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/media.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/media_context.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/notice.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/user/recharge.jsp=UTF-8
+encoding//src/test/java=UTF-8
+encoding//src/test/resources=UTF-8
+encoding/<project>=UTF-8
+encoding/pom.xml=UTF-8

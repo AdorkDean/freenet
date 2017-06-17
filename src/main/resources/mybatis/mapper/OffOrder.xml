@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.OffOrderDao">
+	
+	<sql id="tabName">f_offOrder</sql>
+	
+	<resultMap id="OffOrder" type="com.freenet.domain.OffOrder"></resultMap>
+	
+	<insert id="insertOffOrder" useGeneratedKeys="true" parameterType="com.freenet.domain.OffOrder">
+		INSERT INTO 
+		<include refid="tabName"/>
+		(type,sellUserId,sellUsername,sellName,sellCoin,price,status,intervention,sellCdt)
+		VALUES(#{type},#{sellUserId},#{sellUsername},#{sellName},#{sellCoin},#{price},#{status},#{intervention},#{sellCdt})
+	</insert>
+	
+	<!-- 分页查询所有的线下订单 -->
+	<select id="selectOffOrderByPage" resultMap="OffOrder">
+		SELECT  * FROM 
+		<include refid="tabName"/>
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffOrderByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+	</select>
+	<!-- 结束 -->
+	
+	<!-- 委托管理 -->
+	<!-- 分页查询委托记录 -->
+	<select id="selectEntrustByPage" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6)
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectEntrustByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6)
+	</select>
+	<!-- 结束 -->
+	
+	<!-- 查询某个用户的所有委托管理 -->
+	<select id="selectEntrustByUserId" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6)
+		ORDER BY sellCdt DESC
+	</select>
+	
+	<!-- 卖出记录 -->
+	<!-- 分页查询非当前用户线下卖单 -->
+	<select id="selectSellUserIdByPage" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId!=#{sellUserId} AND status=0 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectSellUserIdByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId!=#{sellUserId} AND status=0
+	</select>
+	
+	<!-- 某用户的线下卖出记录 -->
+	<select id="selectOffOrderSellByPage" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6)
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffOrderSellByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6)
+	</select>
+	<!-- 结束 -->
+	
+	<!-- 买入记录 -->
+	<!-- 分页查询某用户的买入记录 -->
+	<select id="selectOffOrderBuyByPage" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND status!=0 AND status!=6 
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffOrderBuyByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND status!=0 AND status!=6
+	</select>
+	<!-- 结束 -->
+	
+	<!-- 分页查询不同状态的线下订单 -->
+	<select id="selectEntrustStatusByPage" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND status=#{status} 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectEntrustStatusByPageCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND status=#{status}
+	</select>
+	<!-- 结束 -->
+	
+	<update id="updateOffOrder">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		buyUserId=#{offOrder.buyUserId},
+		buyUsername=#{offOrder.buyUsername},
+		buyName=#{offOrder.buyName},
+		status=#{offOrder.status},
+		buyCdt=#{offOrder.buyCdt} 
+		WHERE id=#{offOrder.id}
+	</update>
+	
+	<update id="updateOffOrderStatus">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		status=#{status}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="selectOffOrderById" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE id=#{id}
+	</select>
+	
+	<!-- 更新realPrice与realCdt -->
+	<update id="updaterealPrice">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		realPrice=#{offOrder.realPrice},
+		realCdt=#{offOrder.realCdt}
+		WHERE id=#{offOrder.id}
+	</update>
+	
+	<!-- 根据不同状态查询线下所有订单 -->
+	<select id="selectOffOrderByStatus" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE status=#{status}
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffOrderByStatusCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE status=#{status}
+	</select>
+	
+	<select id="selectOffOrderByInterven" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE intervention=1
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffOrderByIntervenCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE intervention=1
+	</select>
+	
+	<!-- 模糊查询 -->
+	<select id="selectByKeyword" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName"/>
+		WHERE sellUsername=#{keyword} OR sellName LIKE "%"#{keyword}"%"
+	</select>
+	
+	<!-- 根据不同状态查询某用的线下卖出订单 -->
+	<select id="selectUserOffByStatus" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND status=#{status} 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectUserOffByStatusCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND status=#{status} 
+	</select>
+	
+	<!-- 平台介入的某用户的线下卖出订单 -->
+	<select id="selectSellOffByInterven" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND intervention=#{intervention} 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectSellOffByIntervenCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND intervention=#{intervention} 
+	</select>
+	
+	<!-- 平台是否介入某用户的线下买入订单 -->
+	<select id="selectBuyOffByInterven" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND intervention=#{intervention} 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectBuyOffByIntervenCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND intervention=#{intervention} 
+	</select>
+	
+	<!-- 根据不同状态查询某用的线下买入订单 -->
+	<select id="selectBuyOffByStatus" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND status=#{status} 
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectBuyOffByStatusCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND status=#{status} 
+	</select>
+	
+	<!-- 查询某个用户的所有线下订单 -->
+	<select id="selectOffBySellUserId" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} 
+		ORDER BY sellCdt DESC
+	</select>
+	
+	<update id="updateIntervention">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		intervention=#{intervention}
+		WHERE id=#{id}
+	</update>
+	
+	<!-- 分页查询用户买入记录的起始跟结束时间的分页查询 -->
+	<select id="selectOffBuyDateAndUser" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffBuyDateUserCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+	<!-- 分页查询用户卖出记录的起始跟结束时间的分页查询  -->
+	<select id="selectOffSellDateAndUser" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6) 
+		AND (buyCdt BETWEEN #{start} AND #{end})
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffSellDateUserCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6) 
+		AND (buyCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+	<!-- 分页查询选择天数买入记录 -->
+	<select id="selectOffBuyByDay" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffBuyByDayCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE buyUserId=#{buyUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+	<!-- 分页查询选择天数卖出记录 -->
+	<select id="selectOffSellByDay" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+		ORDER BY buyCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectOffSellByDayCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status!=0 AND status!=6) AND (buyCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+	<!-- 分页查询用户委托管理的起始跟结束时间的分页查询  -->
+	<select id="selectEntrustDateAndUser" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6) 
+		AND (sellCdt BETWEEN #{start} AND #{end})
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectEntrustDateUserCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6) 
+		AND (sellCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+	<!-- 分页查询选择天数委托管理 -->
+	<select id="selectEntrustByDay" resultMap="OffOrder">
+		SELECT * FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6) AND (sellCdt BETWEEN #{start} AND #{end})
+		ORDER BY sellCdt DESC LIMIT #{startPos},#{pageSize}
+	</select>
+	<select id="selectEntrustByDayCount" resultType="int">
+		SELECT COUNT(*) FROM 
+		<include refid="tabName" /> 
+		WHERE sellUserId=#{sellUserId} AND (status=0 OR status=6) AND (sellCdt BETWEEN #{start} AND #{end})
+	</select>
+	
+
+</mapper>

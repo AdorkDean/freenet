@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-4.2.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-4.2.xsd
+       http://mybatis.org/schema/mybatis-spring
+       http://mybatis.org/schema/mybatis-spring.xsd">
+
+	<description>freenet spring config</description>
+
+	<!-- 该包下的类支持注解，表示会被当作{@code mybatis mapper}处理 配置了之后表示可以自动引入mapper类-->
+	<mybatis:scan base-package="com.freenet.dao"/>
+	
+	<!-- properties配置文件 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:conf/freenet.db.properties</value>
+				<value>classpath:conf/freenet.aliyunOssConf.properties</value>
+				<value>classpath:conf/fileIO.properties</value>
+				<value>classpath:conf/mail-configuration.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!--数据库连接-->  
+   <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">   
+        <property name="url" value="${db.url}" />  
+        <property name="username" value="${db.username}"/>  
+        <property name="password" value="${db.password}"/>  
+      <!--   配置初始化大小、最小、最大   -->
+        <property name="initialSize"><value>1</value></property>  
+        <property name="maxActive"><value>5</value></property>  
+        <property name="minIdle"><value>1</value></property>  
+        <!-- 配置获取连接等待超时的时间   -->
+        <property name="maxWait"><value>60000</value></property>  
+       <!--  配置监控统计拦截的filters   -->
+        <property name="filters"><value>stat</value></property>  
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒   -->
+        <property name="timeBetweenEvictionRunsMillis"><value>60000</value></property>  
+       <!--  配置一个连接在池中最小生存的时间，单位是毫秒   -->
+        <property name="minEvictableIdleTimeMillis"><value>300000</value></property>  
+         
+        <property name="validationQuery"><value>SELECT 'x'</value></property>  
+        <property name="testWhileIdle"><value>true</value></property>  
+        <property name="testOnBorrow"><value>false</value></property>  
+        <property name="testOnReturn"><value>false</value></property>  
+        <property name="poolPreparedStatements"><value>true</value></property>  
+        <property name="maxOpenPreparedStatements"><value>20</value></property>  
+          
+    </bean>
+    
+    <!-- 文章存放位置配置 -->
+    <bean id="fileIO" class="com.freenet.tools.fileIO" >
+    	<property name="position"   value="${storefolder}"/>
+    </bean>
+     <!-- 邮件接口配置文件 -->
+    <bean id="mailConfig" class="com.freenet.tools.MailTools" >
+    	<property name="api_User"   value="${api_User}"/>
+    	<property name="api_Key"   value="${api_Key}"/>
+    </bean>
+    
+    <!-- mybatis配置sessionFactory -->  
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="druidDataSource" />
+        <property name="configLocation" value="classpath:conf/mybatis-config.xml" />
+        <property name="typeAliasesPackage" value="com.freenet.domain"></property>
+		<property name="mapperLocations" value="classpath*:mybatis/mapper/**/*.xml"></property>
+    </bean>
+    
+	<!-- 事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="druidDataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" /> 
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="create*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+            <tx:method name="*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="allManagerMethod" expression="execution(* com.freenet.service.Impl.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
+    </aop:config>
+    
+    <!-- AliyunOSSConf -->   
+	<bean id="aliyunOssConf" class="com.freenet.conf.AliyunOssConf">
+		<property name="aliOssOpen" value="${aly.aliOssOpen}" />
+		<property name="endpoint" value="${aly.endpoint}" />
+		<property name="accessKeyId" value="${aly.accessKeyId}" />
+		<property name="accessKeySecret" value="${aly.accessKeySecret}" />
+		<property name="bucketName" value="${aly.bucketName}" />
+		<property name="domainName" value="${domainName}" />
+		<property name="uploadPath" value="${uploadPath}" />
+		<property name="uploadFolder" value="${uploadFolder}" />
+	</bean>
+
+
+	
+	<!-- 配置 文件上传的支持 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="1024000000" />
+		<property name="resolveLazily" value="true" />
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+
+	<!-- 计划任务  (定时执行,每日进行更新)-->
+	<!-- <task:scheduled-tasks>
+		<task:scheduled ref="timerTask" method="updateCont" cron="0 0 0 * * ?"/>
+	</task:scheduled-tasks> -->
+	
+</beans>

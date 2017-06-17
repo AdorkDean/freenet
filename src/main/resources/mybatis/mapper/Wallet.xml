@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.freenet.dao.WalletDao">
+
+	<sql id="tabName">f_wallet</sql>
+
+	<resultMap id="Wallet" type="com.freenet.domain.Wallet"></resultMap>
+
+	<insert id="insertWallet" useGeneratedKeys="true"
+		parameterType="com.freenet.domain.Wallet">
+		INSERT INTO
+		<include refid="tabName" />
+		(userId,coinId,coin,adress,rmbRech,coinFrozen,cdt)
+		VALUES(#{userId},#{coinId},#{coin},#{adress},#{rmbRech},#{coinFrozen},#{cdt})
+	</insert>
+
+	<select id="select0" resultMap="Wallet">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId}
+	</select>
+	<select id="select" resultMap="Wallet">
+		SELECT * FROM
+		<include refid="tabName" />
+		WHERE userId=#{userId} AND coinId=#{coinId}
+	</select>
+
+	<update id="updateCoin">
+		update
+		<include refid="tabName" />
+		set coin = #{coin} where  userId = #{userId}
+	</update>
+	
+	<update id="updateCoinFrozen">
+		UPDATE 
+		<include refid="tabName" /> 
+		SET 
+		coinFrozen=#{coinFrozen}
+		WHERE userId=#{userId} AND coinId=#{coinId}
+	</update>
+
+
+</mapper>

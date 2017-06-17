@@ -1,0 +1,48 @@
+.Com_mid {
+				width: 38%;
+				overflow: hidden;
+				margin: 50px auto;
+			}
+			
+			.Com_img {
+				width: 102px;
+				overflow: hidden;
+				float: left;
+			}
+			
+			.Com_cont {
+				overflow: hidden;
+				float: left;
+				margin-left: 40px;
+			}
+			
+			.Com_cont span {
+				color: white;
+			}
+			
+			.Com_con {
+				font-size: 32px;
+			}
+			
+			.Com_find {
+				margin-left: 15px;
+				font-size: 16px;
+			}
+			
+			.Com_cont a {
+				width: 85px;
+				height: 35px;
+				display: block;
+				color: white;
+				background: #1cdde8;
+				text-align: center;
+				line-height: 34px;
+				border-radius: 4px;
+				margin-top: 24px;
+			}
+			.Com_Prompt{
+				margin-top: 15px;
+			}
+			.Acc_mid{
+				min-height: 650px;
+			}
