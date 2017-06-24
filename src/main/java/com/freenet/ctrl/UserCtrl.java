@@ -817,6 +817,9 @@ public class UserCtrl {
 		User user = userService.selectByUserId(getUser(request).getUserId());
 		LineOrder lineOrder = lineOrderService.selectById(id);
 		String pwdMD5 = PwdTools.ecodingPwd(dealpwd, "md5");
+		if(user.getAuthStatus()!=V.user_authStatus_yes){
+			return "redirect:/user/trading/onlineBuy?error=" + URLEncoder.encode("用户未实名认证", "utf-8");
+		}
 		if (!pwdMD5.equals(user.getDealPwd())) {
 			return "redirect:/user/trading/onlineBuy?error=" + URLEncoder.encode("支付密码输入错误", "utf-8");
 		}
@@ -927,6 +930,10 @@ public class UserCtrl {
 		BigDecimal amount = new BigDecimal(sellAmount);
 		// 手续费
 		BigDecimal rateFee = amount.multiply(coinService.selectAll().get(0).getCoinRate());
+		if (user.getAuthStatus() != V.user_authStatus_yes) {
+			// model.addAttribute("error", "用户身份认证不通过！");
+			return "redirect:/user/trading/onlineSell?error=" + URLEncoder.encode("用户身份认证状态不通过！", "utf-8");
+		}
 		if (!message.equals(smsService.getSmsVerifyCode(user.getUsername()))) {
 			return "redirect:/user/trading/onlineSell?error=" + URLEncoder.encode("验证码错误！", "utf-8");
 		}
@@ -938,10 +945,6 @@ public class UserCtrl {
 				return "redirect:/user/trading/onlineSell?error=" + URLEncoder.encode("用户还未设置支付密码！", "utf-8");
 			}
 			return "redirect:/user/trading/onlineSell?error=" + URLEncoder.encode("输入支付密码错误！", "utf-8");
-		}
-		if (user.getAuthStatus() != V.user_authStatus_yes) {
-			// model.addAttribute("error", "用户身份认证不通过！");
-			return "redirect:/user/trading/onlineSell?error=" + URLEncoder.encode("用户身份认证状态不通过！", "utf-8");
 		}
 		// 插入新纪录
 		lineOrderService.insertLineOrder(user.getUserId(), user.getUsername(), Order.order_type_user, sellAmount,
@@ -2084,8 +2087,8 @@ public class UserCtrl {
 	public String smsVerifyCode(Model model, HttpServletRequest req, String mobile) {
 		String verifyCode = String.valueOf(SMSVerifyCodeTools.getSmsVerifyCode());
 		smsService.putSmsVerifyCode(mobile, verifyCode);
-		// boolean sendOK = smsService.sendVerifyCode(mobile, verifyCode);
-		// return sendOK ? "success" : "fail";
+//		 boolean sendOK = smsService.sendVerifyCode(mobile, verifyCode);
+//		 return sendOK ? "success" : "fail";
 		return "success";
 	}
 

@@ -45,7 +45,8 @@
 <script type="text/javascript">
 var error = "${error}";
 if (error != "") {
-	alert(error);
+//	alert("11111");
+	//alert(decodeURIComponent(error)+"111");
 }
 </script>
 <body>

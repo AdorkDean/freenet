@@ -10,7 +10,17 @@
 <script type="text/javascript">
 	var error = "${error}";
 	if (error != "") {
+		if(error.indexOf("实名")>0){
+			var r = confirm(error+", 按确定前往实名认证！");
+			if(r==true){
+				var speed = 600; 
+				window.location.href =  "/freenet/user/safe/user_toAuth";
+			}else{
+				
+			}
+		}else{
 		alert(error);
+		}
 	}
 </script>
 <script type="text/javascript">
